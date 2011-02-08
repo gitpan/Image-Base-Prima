@@ -1,32 +1,31 @@
 # Copyright 2010, 2011 Kevin Ryde
 
-# This file is part of Image-Math-Prima.
+# This file is part of Image-Base-Prima.
 #
-# Image-Math-Prima is free software; you can redistribute it and/or modify
+# Image-Base-Prima is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by the
 # Free Software Foundation; either version 3, or (at your option) any later
 # version.
 #
-# Image-Math-Prima is distributed in the hope that it will be useful, but
+# Image-Base-Prima is distributed in the hope that it will be useful, but
 # WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
 # or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
 # for more details.
 #
 # You should have received a copy of the GNU General Public License along
-# with Image-Math-Prima.  If not, see <http://www.gnu.org/licenses/>.
+# with Image-Base-Prima.  If not, see <http://www.gnu.org/licenses/>.
 
 
 package Image::Base::Prima::Drawable;
-use 5.004;
+use 5.005;
 use strict;
-use warnings;
 use Carp;
 use vars '$VERSION', '@ISA';
 
 use Image::Base;
 @ISA = ('Image::Base');
 
-$VERSION = 1;
+$VERSION = 2;
 
 # uncomment this to run the ### lines
 #use Smart::Comments '###';
@@ -190,7 +189,7 @@ sub colour_to_pixel {
 1;
 __END__
 
-=for stopwords Ryde Prima RGB drawables
+=for stopwords Ryde Prima RGB drawables resizes Image-Base-Prima
 
 =head1 NAME
 
@@ -277,7 +276,7 @@ The target drawable.
 
 The width and height of the underlying drawable.  Setting these resizes the
 drawable (as per C<$drawable-E<gt>size>, see L<Prima::Drawable/Other
-Properties>).
+properties>).
 
 =back
 

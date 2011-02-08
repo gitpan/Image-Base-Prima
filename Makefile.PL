@@ -17,9 +17,8 @@
 # You should have received a copy of the GNU General Public License along
 # with Image-Base-Prima.  If not, see <http://www.gnu.org/licenses/>.
 
-use 5.004;
+use 5.005;
 use strict;
-use warnings;
 use ExtUtils::MakeMaker;
 use lib 'inc';
 use MyMakeMakerExtras;
@@ -32,11 +31,6 @@ MyMakeMakerExtras::WriteMakefile
    LICENSE      => 'gpl',
    SIGN         => 1,
    PREREQ_PM    => {
-                    'warnings' => 0,
-
-                    # only for testing actually
-                    'List::Util' => 0,
-
                     # ellipse() $fill done natively, so no need to depend on
                     # Image::Base 1.12 for that
                     'Image::Base' => '1.12',
@@ -48,17 +42,24 @@ MyMakeMakerExtras::WriteMakefile
 
                     'Test::More' => 0,
                    },
-   MIN_PERL_VERSION => '5.004',
+   # cf Prima 1.29 is 5.00502
+   MIN_PERL_VERSION => '5.005',
 
-   META_MERGE
-   => { resources
-        => { homepage => 'http://user42.tuxfamily.org/image-base-prima/index.html',
-           },
-        optional_features
-        => { maximum_devel
-             => { description => 'Stuff used variously for development.',
-                  requires => { 'Smart::Comments'     => 0,
-                              },
-                },
-           },
-      });
+   META_MERGE =>
+   { recommends =>
+     {
+      # version 1.29 avoids some segvs in save() to a non-existent
+      # directory
+      Prima => '1.29',
+     },
+     resources =>
+     { homepage => 'http://user42.tuxfamily.org/image-base-prima/index.html',
+     },
+     optional_features =>
+     { maximum_devel =>
+       { description => 'Stuff used variously for development.',
+         requires => { 'Smart::Comments'     => 0,
+                     },
+       },
+     },
+   });

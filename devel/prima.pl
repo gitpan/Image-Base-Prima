@@ -2,30 +2,38 @@
 
 # Copyright 2010, 2011 Kevin Ryde
 
-# This file is part of Image-Math-Prima.
+# This file is part of Image-Base-Prima.
 #
-# Image-Math-Prima is free software; you can redistribute it and/or modify
+# Image-Base-Prima is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by the
 # Free Software Foundation; either version 3, or (at your option) any later
 # version.
 #
-# Image-Math-Prima is distributed in the hope that it will be useful, but
+# Image-Base-Prima is distributed in the hope that it will be useful, but
 # WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
 # or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
 # for more details.
 #
 # You should have received a copy of the GNU General Public License along
-# with Image-Math-Prima.  If not, see <http://www.gnu.org/licenses/>.
+# with Image-Base-Prima.  If not, see <http://www.gnu.org/licenses/>.
 
 use 5.010;
 use strict;
 use warnings;
-# use blib "$ENV{HOME}/perl/prima/Prima-1.28/blib";
-use lib "$ENV{HOME}/perl/prima/Prima-1.28/inst/local/lib/perl/5.10.1/";
+# use blib "$ENV{HOME}/perl/prima/Prima-1.29/blib";
+use lib "$ENV{HOME}/perl/prima/Prima-1.29/inst/local/lib/perl/5.10.1/";
 # use Prima::noX11;
 use Prima;
 
 use Smart::Comments;
+
+{
+  my $d = Prima::Image->create (width => 1,
+                                height => 1,
+                               );
+  $d->save ('/tmp/nosuchdir/z.png');
+  exit 0;
+}
 
 {
   my $d = Prima::Image->create (width => 1,

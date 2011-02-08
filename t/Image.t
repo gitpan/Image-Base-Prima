@@ -2,24 +2,23 @@
 
 # Copyright 2010, 2011 Kevin Ryde
 
-# This file is part of Image-Math-Prima.
+# This file is part of Image-Base-Prima.
 #
-# Image-Math-Prima is free software; you can redistribute it and/or modify it
+# Image-Base-Prima is free software; you can redistribute it and/or modify it
 # under the terms of the GNU General Public License as published by the Free
 # Software Foundation; either version 3, or (at your option) any later
 # version.
 #
-# Image-Math-Prima is distributed in the hope that it will be useful, but
+# Image-Base-Prima is distributed in the hope that it will be useful, but
 # WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
 # or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
 # for more details.
 #
 # You should have received a copy of the GNU General Public License along
-# with Image-Math-Prima.  If not, see <http://www.gnu.org/licenses/>.
+# with Image-Base-Prima.  If not, see <http://www.gnu.org/licenses/>.
 
-use 5.004;
+use 5.005;
 use strict;
-use warnings;
 use Test::More;
 
 use lib 't';
@@ -29,7 +28,7 @@ BEGIN { MyTestHelpers::nowarnings() }
 # uncomment this to run the ### lines
 #use Smart::Comments;
 
-plan tests => 23;
+plan tests => 32;
 use Prima::noX11; # without connecting to the server
 require Image::Base::Prima::Image;
 
@@ -37,7 +36,7 @@ require Image::Base::Prima::Image;
 #------------------------------------------------------------------------------
 # VERSION
 
-my $want_version = 1;
+my $want_version = 2;
 is ($Image::Base::Prima::Image::VERSION,
     $want_version, 'VERSION variable');
 is (Image::Base::Prima::Image->VERSION,
@@ -91,7 +90,7 @@ ok (! eval { Image::Base::Prima::Image->VERSION($check_version); 1 },
 }
 
 #------------------------------------------------------------------------------
-# save() / load()
+# load() errors
 
 my $filename = 'tempfile.png';
 diag "Tempfile $filename";
@@ -104,6 +103,62 @@ END {
       or diag "Oops, cannot remove $filename: $!";
   }
 }
+
+{
+  my $eval_ok = 0;
+  my $ret = eval {
+    my $image = Image::Base::Prima::Image->new
+      (-file => $filename);
+    $eval_ok = 1;
+    $image
+  };
+  my $err = $@;
+  diag "new() err is \"",$err,"\"";
+  is ($eval_ok, 0, 'new() error for no file - doesn\'t reach end');
+  is ($ret, undef, 'new() error for no file - return undef');
+  like ($err, '/^Cannot/', 'new() error for no file - error string "Cannot"');
+}
+{
+  my $eval_ok = 0;
+  my $image = Image::Base::Prima::Image->new;
+  my $ret = eval {
+    $image->load ($filename);
+    $eval_ok = 1;
+    $image
+  };
+  my $err = $@;
+  diag "load() err is \"",$err,"\"";
+  is ($eval_ok, 0, 'load() error for no file - doesn\'t reach end');
+  is ($ret, undef, 'load() error for no file - return undef');
+  like ($err, '/^Cannot/', 'load() error for no file - error string "Cannot"');
+}
+
+#-----------------------------------------------------------------------------
+# save() errors
+
+SKIP: {
+  eval { Prima->VERSION(1.29); 1 }
+    or skip 'due to save() segvs before Prima 1.29, have only'.Prima->VERSION,
+      3;
+  my $eval_ok = 0;
+  my $nosuchdir = 'no/such/directory/foo.png';
+  my $image = Image::Base::Prima::Image->new (-width => 1,
+                                              -height => 1);
+  my $ret = eval {
+    $image->save ($nosuchdir);
+    $eval_ok = 1;
+    $image
+  };
+  my $err = $@;
+  diag "save() err is \"",$err,"\"";
+  is ($eval_ok, 0, 'save() error for no dir - doesn\'t reach end');
+  is ($ret, undef, 'save() error for no dir - return undef');
+  like ($err, '/^Cannot/', 'save() error for no dir - error string "Cannot"');
+}
+
+
+#------------------------------------------------------------------------------
+# save() / load()
 
 {
   my $prima_image = Prima::Image->new (width => 10, height => 10);

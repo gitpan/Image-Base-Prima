@@ -1,25 +1,24 @@
 # Copyright 2010, 2011 Kevin Ryde
 
-# This file is part of Image-Math-Prima.
+# This file is part of Image-Base-Prima.
 #
-# Image-Math-Prima is free software; you can redistribute it and/or modify
+# Image-Base-Prima is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by the
 # Free Software Foundation; either version 3, or (at your option) any later
 # version.
 #
-# Image-Math-Prima is distributed in the hope that it will be useful, but
+# Image-Base-Prima is distributed in the hope that it will be useful, but
 # WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
 # or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
 # for more details.
 #
 # You should have received a copy of the GNU General Public License along
-# with Image-Math-Prima.  If not, see <http://www.gnu.org/licenses/>.
+# with Image-Base-Prima.  If not, see <http://www.gnu.org/licenses/>.
 
 
 package Image::Base::Prima::Image;
-use 5.004;
+use 5.005;
 use strict;
-use warnings;
 use Carp;
 use Prima;
 use vars '$VERSION', '@ISA';
@@ -27,7 +26,7 @@ use vars '$VERSION', '@ISA';
 use Image::Base::Prima::Drawable;
 @ISA = ('Image::Base::Prima::Drawable');
 
-$VERSION = 1;
+$VERSION = 2;
 
 # uncomment this to run the ### lines
 #use Smart::Comments '###';
@@ -121,7 +120,7 @@ sub load {
 
   # stringize against refs like Path::Class
   $self->{'-drawable'}->load ("$filename", loadExtras => 1)
-    or croak "Error loading $filename: ",$@;
+    or croak "Cannot load $filename: ",$@;
   ### extras: $self->{'-drawable'}->{extras}
 }
 
@@ -146,7 +145,7 @@ sub save {
   # uses $im->{'extras'}->{'codecID'} if set, otherwise filename extension
   # stringize against refs like Path::Class
   $self->{'-drawable'}->save ("$filename")
-    or croak "Error saving $filename: ",$@;
+    or croak "Cannot save $filename: ",$@;
 }
 
 # not yet documented
@@ -160,7 +159,7 @@ sub save_fh {
 1;
 __END__
 
-=for stopwords Ryde Prima .png PNG JPEG filename
+=for stopwords Ryde Prima .png PNG JPEG filename GIF XBM XPM BMP Image-Base-Prima
 
 =head1 NAME
 
@@ -193,7 +192,7 @@ subclass adds image creation and file load/save.  C<begin_paint> /
 C<end_paint> bracketing is still necessary.
 
 As of Prima 1.28 the supported file formats for both read and write include
-JPEG, PNG, TIFF, GIF, XBM, XPM and BMP.  Prima on X11 draws using the X
+PNG, JPEG, TIFF, GIF, XBM, XPM and BMP.  Prima on X11 draws using the X
 server, so an X connection is necessary.  Don't use C<Prima::noX11> or
 drawing operations will quietly do nothing.
 
@@ -256,7 +255,7 @@ C<$primaimage-E<gt>{'extras'}-E<gt>{'codecID'}> field of the underlying
 C<Prime::Image>.
 
 After C<load> the C<-file_format> is the format read.  Setting
-C<-file_format> can changes the format for a subsequent C<save>.
+C<-file_format> changes the format for a subsequent C<save>.
 
 =back
 

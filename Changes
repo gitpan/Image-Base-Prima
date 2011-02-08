@@ -16,5 +16,8 @@ You can get a copy of the GNU General Public License online at
 <http://www.gnu.org/licenses/>.
 
 
+Version 2, February 2011
+    - fix Makefile.PL for perl 5.6 and earlier
+
 Version 1, January 2011
     - the first version

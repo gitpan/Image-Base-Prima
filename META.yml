@@ -1,6 +1,6 @@
 --- #YAML:1.0
 name:               Image-Base-Prima
-version:            1
+version:            2
 abstract:           Image::Base drawing into Prima windows and images.
 author:
     - Kevin Ryde <user42@zip.com.au>
@@ -12,12 +12,10 @@ build_requires:
     ExtUtils::MakeMaker:  0
 requires:
     Image::Base:   1.12
-    List::Util:    0
-    perl:          5.004
+    perl:          5.005
     Prima:         0
     Prima::noX11:  0
     Test::More:    0
-    warnings:      0
 resources:
     homepage:  http://user42.tuxfamily.org/image-base-prima/index.html
     license:   http://www.gnu.org/licenses/gpl.html
@@ -40,7 +38,6 @@ optional_features:
     maximum_tests:
         description:  Have "make test" do as much as possible.
         requires:
-            File::Spec:          0
             Parse::CPAN::Meta:   0
             Test::DistManifest:  0
             Test::Pod:           1.00
@@ -49,3 +46,5 @@ optional_features:
             YAML::Syck:          0
             YAML::Tiny:          0
             YAML::XS:            0
+recommends:
+    Prima:  1.29
