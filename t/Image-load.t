@@ -23,6 +23,7 @@ use Prima::noX11; # without connecting to the server
 use Image::Base::Prima::Image;
 Image::Base::Prima::Image->new;
 
-use Test::More tests => 1;
-ok (1, 'Image::Base::Prima::Image load as first thing (almost)');
+use Test;
+plan tests => 1;
+ok (1, 1, 'Image::Base::Prima::Image load as first thing (almost)');
 exit 0;

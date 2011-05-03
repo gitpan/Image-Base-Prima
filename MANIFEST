@@ -8,6 +8,7 @@ debian/rules
 debian/source/format
 debian/watch
 devel/codecs.pl
+devel/hotspot.pl
 devel/image-nox11-pixel.pl
 devel/image-nox11.pl
 devel/prima.pl
@@ -23,11 +24,15 @@ t/Drawable-load.t
 t/Drawable.t
 t/Image-load.t
 t/Image-path-class.t
+t/Image-png.t
 t/Image-weaken.t
+t/Image-xpm.t
 t/Image.t
 t/MyTestHelpers.pm
 t/MyTestImageBase.pm
 xt/0-META-read.t
+xt/0-no-debug-left-on.t
+xt/0-Test-ConsistentVersion.t
 xt/0-Test-DistManifest.t
 xt/0-Test-Pod.t
 xt/0-Test-YAML-Meta.t

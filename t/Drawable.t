@@ -28,14 +28,14 @@ BEGIN { MyTestHelpers::nowarnings() }
 eval { require Prima }
   or plan skip_all => "due to no Prima initialize -- $@";
 
-plan tests => 1517;
+plan tests => 1485;
 require Image::Base::Prima::Drawable;
 
 
 #------------------------------------------------------------------------------
 # VERSION
 
-my $want_version = 2;
+my $want_version = 3;
 is ($Image::Base::Prima::Drawable::VERSION,
     $want_version, 'VERSION variable');
 is (Image::Base::Prima::Drawable->VERSION,
@@ -64,8 +64,8 @@ ok (! eval { Image::Base::Prima::Drawable->VERSION($check_version); 1 },
   $image->xy (2,2, 'white');
   is ($image->xy (2,2), '#FFFFFF');
 
-  require MyTestImageBase;
-  MyTestImageBase::dump_image($image);
+  # require MyTestImageBase;
+  # MyTestImageBase::dump_image($image);
 }
 
 #------------------------------------------------------------------------------
@@ -85,8 +85,8 @@ ok (! eval { Image::Base::Prima::Drawable->VERSION($check_version); 1 },
   is ($image->xy (0,0), '#FFFFFF');
   is ($image->xy (9,9), '#FFFFFF');
 
-#   require MyTestImageBase;
-#   MyTestImageBase::dump_image($image);
+  # require MyTestImageBase;
+  # MyTestImageBase::dump_image($image);
 }
 
 {
@@ -102,8 +102,8 @@ ok (! eval { Image::Base::Prima::Drawable->VERSION($check_version); 1 },
   $image->rectangle (2,2, 2,2, 'white');
   is ($image->xy (2,2), '#FFFFFF');
 
-#   require MyTestImageBase;
-#   MyTestImageBase::dump_image($image);
+  # require MyTestImageBase;
+  # MyTestImageBase::dump_image($image);
 }
 
 #------------------------------------------------------------------------------
@@ -122,8 +122,8 @@ ok (! eval { Image::Base::Prima::Drawable->VERSION($check_version); 1 },
   $image->ellipse (2,2, 2,2, 'white');
   is ($image->xy (2,2), '#FFFFFF');
 
-  require MyTestImageBase;
-  MyTestImageBase::dump_image($image);
+  # require MyTestImageBase;
+  # MyTestImageBase::dump_image($image);
 }
 
 #------------------------------------------------------------------------------
@@ -141,8 +141,8 @@ ok (! eval { Image::Base::Prima::Drawable->VERSION($check_version); 1 },
   $image->line (2,2, 2,2, 'white');
   is ($image->xy (2,2), '#FFFFFF');
 
-#   require MyTestImageBase;
-#   MyTestImageBase::dump_image($image);
+  # require MyTestImageBase;
+  # MyTestImageBase::dump_image($image);
 }
 {
   my $prima_image = Prima::Image->new (width => 10, height => 10);
@@ -156,8 +156,8 @@ ok (! eval { Image::Base::Prima::Drawable->VERSION($check_version); 1 },
   $image->line (0,0, 0,0, 'white');
   is ($image->xy (0,0), '#FFFFFF');
 
-#   require MyTestImageBase;
-#   MyTestImageBase::dump_image($image);
+  # require MyTestImageBase;
+  # MyTestImageBase::dump_image($image);
 }
 
 

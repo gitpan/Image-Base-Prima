@@ -16,6 +16,11 @@
 # with Image-Base-Prima.  If not, see <http://www.gnu.org/licenses/>.
 
 
+# A -quality_percent could set the "quality" parameter for jpeg codec saves.
+# cf Image::Base::Imager and Image::Base::Gtk2::Gdk::Pixbuf might have similar.
+#
+
+
 package Image::Base::Prima::Image;
 use 5.005;
 use strict;
@@ -26,7 +31,7 @@ use vars '$VERSION', '@ISA';
 use Image::Base::Prima::Drawable;
 @ISA = ('Image::Base::Prima::Drawable');
 
-$VERSION = 2;
+$VERSION = 3;
 
 # uncomment this to run the ### lines
 #use Smart::Comments '###';
@@ -65,6 +70,11 @@ sub new {
 }
 
 # my %get_methods = (-codecID  => 'codecID'); # not yet documented
+
+my %attr_to_extras = (-hotx => 'hotSpotX',
+                      -hoty => 'hotSpotY',
+                     );
+
 sub _get {
   my ($self, $key) = @_;
   ### Prima-Image _get(): $key
@@ -75,15 +85,32 @@ sub _get {
     ### extras: $self->{'-drawable'}->{'extras'}
     return _codecid_to_format ($self->{'-drawable'}->{'extras'}->{'codecID'});
   }
+  if (my $key = $attr_to_extras{$key}) {
+    return $self->{'-drawable'}->{'extras'}->{$key};
+  }
   return $self->SUPER::_get($key);
 }
 
 sub set {
   my ($self, %params) = @_;
-  if (defined (my $format = delete $params{'-file_format'})) {
-    my $drawable = $params{'-drawable'} || $self->{'-drawable'};
-    $drawable->{'extras'}->{'codecID'} = _format_to_codecid($format);
+  my $drawable = $params{'-drawable'} || $self->{'-drawable'};
+  if (exists $params{'-file_format'}) {
+    $drawable->{'extras'}->{'codecID'}
+      = _format_to_codecid(delete $params{'-file_format'});
   }
+  foreach my $attr (keys %attr_to_extras) {
+    if (exists $params{$attr}) {
+      ### $attr
+      ### to extras: $attr_to_extras{$attr}
+      my $value = delete $params{$attr};
+      if (defined $value) {
+        $drawable->{'extras'}->{$attr_to_extras{$attr}} = $value;
+      } else {
+        delete $drawable->{'extras'}->{$attr_to_extras{$attr}};
+      }
+    }
+  }
+  ### extras now: $drawable->{'extras'}
   $self->SUPER::set(%params);
 }
 
@@ -222,7 +249,8 @@ Or an existing C<Prima::Image> object can be given
 Load from C<-file>, or with a C<$filename> argument set C<-file> then load.
 
 The Prima C<loadExtras> option is used so as to get the file format
-C<codecID> in the underlying image.  
+C<codecID> in the underlying image, and any possible "hotspot" for C<-hotx>
+and C<-hoty> below (L</ATTRIBUTES>).
 
 =item C<$image-E<gt>save>
 
@@ -257,6 +285,15 @@ C<Prime::Image>.
 After C<load> the C<-file_format> is the format read.  Setting
 C<-file_format> changes the format for a subsequent C<save>.
 
+=item C<-hotx> (integer or undef, default undef)
+
+=item C<-hoty> (integer or undef, default undef)
+
+The cursor hotspot in images with that attribute.  These are the C<hotSpotX>
+and C<hotSpotY> extra in the C<$primaimage-E<gt>{'extras'}> (see
+L<Prima::codecs> and L<Prima::image-load/Querying extra information>).  As
+of Prima 1.29 they're available from XPM and XBM format files.
+
 =back
 
 =head1 SEE ALSO
@@ -269,7 +306,7 @@ L<Image::Base::Prima::Drawable>
 L<Image::Xpm>,
 L<Image::Xbm>,
 L<Image::Base::GD>,
-L<Image::Base::PNGwriter>
+L<Image::Base::PNGwriter>,
 L<Image::Base::Gtk2::Gdk::Pixbuf>
 
 =head1 HOME PAGE

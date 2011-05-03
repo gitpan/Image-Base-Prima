@@ -1,5 +1,5 @@
 This file contains message digests of all files listed in MANIFEST,
-signed via the Module::Signature module, version 0.66.
+signed via the Module::Signature module, version 0.67.
 
 To verify the content in this distribution, first make sure you have
 Module::Signature installed, then type:
@@ -15,43 +15,48 @@ not run its Makefile.PL or Build.PL.
 Hash: SHA1
 
 SHA1 842745cb706f8f2126506f544492f7a80dbe29b3 COPYING
-SHA1 7ac6e3a0bcdb9e4904dcdcdeea25278a52b96092 Changes
-SHA1 d0b1cedbcb292427b3c5d1d37b19adbc0e9dbf36 MANIFEST
-SHA1 6c771cc4b0718f7bc9c9af01889700d7bce0a8e6 MANIFEST.SKIP
-SHA1 b030ce00e707641b2a63f7cfab4845097e001962 META.yml
-SHA1 c95fcffe4669a1b2bb4c38a82e2a52a3ba96f1c9 Makefile.PL
-SHA1 ecbeacec73340dde139f23e6cfc630f37997df0a debian/changelog
+SHA1 aa4f78f77ecef8842f48d7fd6f053ab902ad30b8 Changes
+SHA1 749b3e504fea3ffda805bed3271568ab87af17d2 MANIFEST
+SHA1 d6f9595a0ae02220d6781c9460782ae32c0d4aaf MANIFEST.SKIP
+SHA1 81f35c531f2e7b2bd77176c5fcd327ed9256778d META.yml
+SHA1 7c8ab80ab35af4c24fe977670261f2ba9233bbac Makefile.PL
+SHA1 fcc66d1865e9af202e449598386bf3fca1859143 debian/changelog
 SHA1 ac3478d69a3c81fa62e60f5c3696165a4e5e6ac4 debian/compat
-SHA1 46f778f5ffad0713c91f6575720927555af8a290 debian/control
+SHA1 884a4d1f8a4637dfe5ef9e2fde453ff2c3c269a0 debian/control
 SHA1 d1bc8be46f4b821221f4c1812f1de888fc07a064 debian/copyright
 SHA1 bb01c8daa0e8d7d4e07d773ed0866c575121655e debian/rules
 SHA1 61652cd1568dcf2614df833eba241755eee34e89 debian/source/format
 SHA1 617cd930c6b3a5f87e68d647659e659919c9ba27 debian/watch
 SHA1 1be1a70a2d74fe73127d1cd5dcefde4149bbe6a4 devel/codecs.pl
+SHA1 4920698cda0df218321d9e553927c81d2ec97c38 devel/hotspot.pl
 SHA1 27bb5c2574bd0fb7c457942411eb771d22dc1de7 devel/image-nox11-pixel.pl
 SHA1 4f045d7384c37834e20db6bdbccd2f86a06c6781 devel/image-nox11.pl
 SHA1 3d28c1b5e5a98aa643a420b8074d85518a494086 devel/prima.pl
-SHA1 cf647ee28a7aaad9896d0063f8a2529919ccfcd3 inc/MyMakeMakerExtras.pm
+SHA1 0acd3fd207c6b48a8b22f9d6a197df1e71bd8b17 inc/MyMakeMakerExtras.pm
 SHA1 7a988b2aa7ed09f1cb9029a1ef3f0e2139dca0cf inc/my_pod2html
-SHA1 0a30a1cc84b37f7273ac4c6dea38f2078b86b9e0 lib/Image/Base/Prima/Drawable.pm
-SHA1 662a3c96546b956099f0e2ad8632fa68accffd81 lib/Image/Base/Prima/Image.pm
-SHA1 d23fe8521837f2ff802624876fe0a0f9eb3e87f8 t/Drawable-load.t
-SHA1 26ba5fde1d84fdf1114173ad0401942efa220c84 t/Drawable.t
-SHA1 86ed39e641dbaf991358e83bc9d4f6fad87b821c t/Image-load.t
-SHA1 e0d9c66a5628fdd4cb5ca885759f514967fc35df t/Image-path-class.t
+SHA1 58f337fc0ea068dc35847a0dfd69049600c0f8c4 lib/Image/Base/Prima/Drawable.pm
+SHA1 099e20d2376e4d1655507d2a245cc1ad5144c048 lib/Image/Base/Prima/Image.pm
+SHA1 a8a0c610003938ffbd461cfc952d36e7b8f90b1d t/Drawable-load.t
+SHA1 5245f0fb54e89176daee351130cae8e2d9235ab2 t/Drawable.t
+SHA1 41af7341aee16893910a8187e17ba59b0dc6fa34 t/Image-load.t
+SHA1 a2cc5b6ea54045e3eb97dec90582f08c6b69aa5f t/Image-path-class.t
+SHA1 10a29bf8891a359e3d62c507825ea8722fac0302 t/Image-png.t
 SHA1 34b2091fb11aeaded754d6f8b1da8b4bb27c85fa t/Image-weaken.t
-SHA1 4c583b62fda2a2e74c86aa47be2c4ffcd45dd01f t/Image.t
-SHA1 36b8eba56c87d62b1b41959187c717577dc16fa5 t/MyTestHelpers.pm
-SHA1 a75f20cb81375b7fe648fdcdf217a19f05b80e41 t/MyTestImageBase.pm
+SHA1 095dc429d7afc14e7386b4e8cc3d4226fed90efa t/Image-xpm.t
+SHA1 2bbb51b13d7b4b693a61be02392be969bfea942b t/Image.t
+SHA1 51456d64ca8f20d6808f6f3c8aa1f4f2553cb78d t/MyTestHelpers.pm
+SHA1 441914b68532584041870389b43132aa5296cbce t/MyTestImageBase.pm
 SHA1 0279c9310ec528d10a2a14e602bf98f1c776cce1 xt/0-META-read.t
+SHA1 219395eb91b03829e6f14db4ebd57d88ea972e61 xt/0-Test-ConsistentVersion.t
 SHA1 8a5e0f34131de34e584fbb1939c191a152566155 xt/0-Test-DistManifest.t
 SHA1 cc04a5fe5d8b8b38bfd56453d5d2686c8ea58783 xt/0-Test-Pod.t
 SHA1 4c14845872d6eb4280e12f862d6ba2c343358c60 xt/0-Test-YAML-Meta.t
+SHA1 8a7f5e7a9686cb291b2976fb6e9ba0f64235d572 xt/0-no-debug-left-on.t
 SHA1 230df3a34109353a91d90d51372ce8d96ac974e7 xt/1-Test-Synopsis.t
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v1.4.10 (GNU/Linux)
 
-iD8DBQFNUI1cLFMCIV9q3ToRAgmdAJ9D67StH0ONGz/t9x+1ee3wHSKp/ACfQW7y
-4oxV7sEpGX4SZarAEVEYWPM=
-=A+hJ
+iD8DBQFNv0eSLFMCIV9q3ToRAuxFAJsG9kMkLmGe/U5MT2zxEzF62k2LXACfZwTQ
+EHqlmXDVV6nQATZi8mxs7IA=
+=Ra67
 -----END PGP SIGNATURE-----

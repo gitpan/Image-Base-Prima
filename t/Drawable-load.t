@@ -21,6 +21,7 @@
 ## no critic (RequireUseStrict, RequireUseWarnings)
 use Image::Base::Prima::Drawable;
 
-use Test::More tests => 1;
-ok (1, 'Image::Base::Prima::Drawable load as first thing');
+use Test;
+plan tests => 1;
+ok (1, 1, 'Image::Base::Prima::Drawable load as first thing');
 exit 0;

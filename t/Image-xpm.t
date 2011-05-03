@@ -28,34 +28,32 @@ BEGIN { MyTestHelpers::nowarnings() }
 # uncomment this to run the ### lines
 #use Smart::Comments;
 
-eval { require Path::Class }
-  or plan skip_all => "due to Path::Class not available -- $@";
-
 use Prima::noX11; # without connecting to the server
 use Prima;
 {
   my $d = Prima::Image->new;
   my $codecs = $d->codecs;
+  diag "codecs: ",join(' ',map {$_->{'fileShortType'}} @$codecs);
 
-  my $have_png = 0;
+  my $have_xpm = 0;
   foreach my $codec (@$codecs) {
-    if ($codec->{'fileShortType'} eq 'PNG') {
-      $have_png = 1;
+    if ($codec->{'fileShortType'} eq 'XPM') {
+      $have_xpm = 1;
     }
   }
-  if (! $have_png) {
-    plan skip_all => "due to no PNG codec";
+  if (! $have_xpm) {
+    plan skip_all => "due to no XPM codec";
   }
 }
 
-plan tests => 6;
+plan tests => 12;
+
 require Image::Base::Prima::Image;
 
-
-my $filename = Path::Class::File->new('tempfile.png');
+my $filename = 'tempfile.xpm';
+diag "Tempfile $filename";
 unlink $filename;
-ok (! -e $filename, "remove any existing $filename");
-diag "Tempfile ",ref($filename)," stringize $filename";
+ok (! -e $filename, "removed any existing $filename");
 END {
   if (defined $filename) {
     diag "Remove tempfile $filename";
@@ -68,37 +66,48 @@ END {
 # save() / load()
 
 {
-  my $prima_image = Prima::Image->new (width => 10, height => 10);
-  my $image = Image::Base::Prima::Image->new (-drawable => $prima_image);
+  my $image = Image::Base::Prima::Image->new (-width => 10,
+                                              -height => 11,
+                                              -hotx => 5,
+                                              -hoty => 6);
+  is ($image->get('-drawable')->{'extras'}->{'hotSpotX'}, 5);
+  is ($image->get('-drawable')->{'extras'}->{'hotSpotY'}, 6);
   $image->save ($filename);
   ok (-e $filename, "save() to $filename");
 }
 {
   my $image = Image::Base::Prima::Image->new (-file => $filename);
-  is ($image->get('-file_format'), 'PNG',
-     'load() with new(-file)');
-}
-{
-  my $image = Image::Base::Prima::Image->new;
-  $image->load ($filename);
-  is ($image->get('-file_format'), 'PNG',
-      'load() method');
+  is ($image->get('-file_format'), 'XPM',
+      'load() -file_format');
+  is ($image->get('-width'), 10,
+      'load() -width');
+  is ($image->get('-height'), 11,
+      'load() -height');
+  is ($image->get('-hotx'), 5,
+      'load() -hotx');
+  is ($image->get('-hoty'), 6,
+      'load() -hoty');
 }
 
 #------------------------------------------------------------------------------
-# save() -file_format
+# as undef
 
 {
-  my $prima_image = Prima::Image->new (width => 10, height => 10);
-  my $image = Image::Base::Prima::Image->new (-drawable => $prima_image,
-                                              -file_format => 'jpeg');
+  my $image = Image::Base::Prima::Image->new (-width => 10,
+                                              -height => 11);
+  $image->set (-hotx => 5,
+               -hoty => 6);
+  $image->set (-hotx => undef,
+               -hoty => undef);
   $image->save ($filename);
-  ok (-e $filename, "save() -file_format \"jpeg\" to $filename");
+  ok (-e $filename, "save() to $filename");
 }
 {
   my $image = Image::Base::Prima::Image->new (-file => $filename);
-  is ($image->get('-file_format'), 'JPEG',
-      'new(-file) get written -file_format');
+  is ($image->get('-hotx'), undef,
+      'load() -hotx');
+  is ($image->get('-hoty'), undef,
+      'load() -hoty');
 }
 
 exit 0;
