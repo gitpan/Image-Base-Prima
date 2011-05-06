@@ -18,7 +18,7 @@
 Source: libimage-base-prima-perl
 Section: perl
 Priority: optional
-Build-Depends: libtest-more-perl | perl (>= 5.6.2), cdbs, debhelper (>= 5)
+Build-Depends: cdbs, debhelper (>= 5)
 Maintainer: Kevin Ryde <user42@zip.com.au>
 Standards-Version: 3.9.2
 Homepage: http://user42.tuxfamily.org/image-base-prima/index.html
@@ -26,7 +26,7 @@ Bugs: mailto:user42@zip.com.au
 
 Package: libimage-base-prima-perl
 Architecture: all
-Depends: perl (>= 5.004), libimage-base-perl | libimage-base-bundle-perl, libprima-perl, ${perl:Depends}, ${misc:Depends}
+Depends: perl (>= 5.005), libimage-base-perl | libimage-base-bundle-perl, libprima-perl, ${perl:Depends}, ${misc:Depends}
 Recommends: libprima-perl (>= 1.29)
 Description: Draw into Prima windows or images in Image::Base style.
  This extends Image::Base extension to draw into Prima drawables,

@@ -19,7 +19,7 @@
 
 use 5.005;
 use strict;
-use Test::More;
+use Test;
 
 use lib 't';
 use MyTestHelpers;
@@ -36,16 +36,18 @@ require Image::Base::Prima::Image;
 #------------------------------------------------------------------------------
 # VERSION
 
-my $want_version = 3;
-is ($Image::Base::Prima::Image::VERSION,
+my $want_version = 4;
+ok ($Image::Base::Prima::Image::VERSION,
     $want_version, 'VERSION variable');
-is (Image::Base::Prima::Image->VERSION,
+ok (Image::Base::Prima::Image->VERSION,
     $want_version, 'VERSION class method');
 
 ok (eval { Image::Base::Prima::Image->VERSION($want_version); 1 },
+    1,
     "VERSION class check $want_version");
 my $check_version = $want_version + 1000;
 ok (! eval { Image::Base::Prima::Image->VERSION($check_version); 1 },
+    1,
     "VERSION class check $check_version");
 
 #------------------------------------------------------------------------------
@@ -53,25 +55,25 @@ ok (! eval { Image::Base::Prima::Image->VERSION($check_version); 1 },
 
 {
   my $image = Image::Base::Prima::Image->new;
-  isa_ok ($image, 'Image::Base::Prima::Image');
-  isa_ok ($image->get('-drawable'), 'Prima::Image');
+  ok (!! $image->isa('Image::Base::Prima::Image'), 1);
+  ok (!! $image->get('-drawable')->isa('Prima::Image'), 1);
 }
 {
   my $image = Image::Base::Prima::Image->new
     (-width => 123);
-  is ($image->get('-width'), 123);
+  ok ($image->get('-width'), 123);
 }
 {
   my $image = Image::Base::Prima::Image->new
     (-height => 234);
-  is ($image->get('-height'), 234);
+  ok ($image->get('-height'), 234);
 }
 {
   my $image = Image::Base::Prima::Image->new
     (-width => 345,
      -height => 456);
-  is ($image->get('-width'), 345);
-  is ($image->get('-height'), 456);
+  ok ($image->get('-width'), 345);
+  ok ($image->get('-height'), 456);
 }
 
 #------------------------------------------------------------------------------
@@ -82,11 +84,11 @@ ok (! eval { Image::Base::Prima::Image->VERSION($check_version); 1 },
   my $i2 = $i1->new;
   $i2->set(-width => 33, -height => 44);
 
-  is ($i1->get('-width'), 11);
-  is ($i1->get('-height'), 22);
-  is ($i2->get('-width'), 33);
-  is ($i2->get('-height'), 44);
-  isnt ($i1->get('-drawable'), $i2->get('-drawable'));
+  ok ($i1->get('-width'), 11);
+  ok ($i1->get('-height'), 22);
+  ok ($i2->get('-width'), 33);
+  ok ($i2->get('-height'), 44);
+  ok ($i1->get('-drawable') != $i2->get('-drawable'), 1);
 }
 
 exit 0;

@@ -19,22 +19,23 @@
 
 use 5.005;
 use strict;
-use Test::More;
-
-
-use 5.008;
-use strict;
-use Test::More;
+use Test;
 
 use lib 't';
 use MyTestHelpers;
 BEGIN { MyTestHelpers::nowarnings() }
 
-# Test::Weaken 3 for "contents"
-eval "use Test::Weaken 3; 1"
-  or plan skip_all => "due to Test::Weaken 3 not available -- $@";
+my $test_count = 1;
+plan tests => $test_count;
 
-plan tests => 1;
+# Test::Weaken 3 for "contents"
+if (! eval 'use Test::Weaken 3; 1') {
+  MyTestHelpers::diag ("Test::Weaken 3 not available -- $@");
+  foreach (1 .. $test_count) {
+    skip ('Test::Weaken 3 not available', 1, 1);
+  }
+  exit 0;
+}
 
 use Prima::noX11; # without connecting to the server
 require Image::Base::Prima::Image;
@@ -45,7 +46,7 @@ require Image::Base::Prima::Image;
          return Image::Base::Prima::Image->new;
        },
      });
-  is ($leaks, undef, 'new() defaults');
+  ok ($leaks, undef, 'new() defaults');
   MyTestHelpers::test_weaken_show_leaks($leaks);
 }
 

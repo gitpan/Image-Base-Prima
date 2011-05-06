@@ -19,7 +19,7 @@
 
 use 5.005;
 use strict;
-use Test::More;
+use Test;
 
 use lib 't';
 use MyTestHelpers;
@@ -30,10 +30,15 @@ BEGIN { MyTestHelpers::nowarnings() }
 
 use Prima::noX11; # without connecting to the server
 use Prima;
+
+my $test_count = 12;
+plan tests => $test_count;
+
 {
   my $d = Prima::Image->new;
   my $codecs = $d->codecs;
-  diag "codecs: ",join(' ',map {$_->{'fileShortType'}} @$codecs);
+  MyTestHelpers::diag ("codecs: ",
+                       join(' ',map {$_->{'fileShortType'}} @$codecs));
 
   my $have_xpm = 0;
   foreach my $codec (@$codecs) {
@@ -42,23 +47,24 @@ use Prima;
     }
   }
   if (! $have_xpm) {
-    plan skip_all => "due to no XPM codec";
+    foreach (1 .. $test_count) {
+      skip ('due to no XPM codec', 1, 1);
+    }
+    exit 0;
   }
 }
-
-plan tests => 12;
 
 require Image::Base::Prima::Image;
 
 my $filename = 'tempfile.xpm';
-diag "Tempfile $filename";
+MyTestHelpers::diag ("Tempfile ", $filename);
 unlink $filename;
-ok (! -e $filename, "removed any existing $filename");
+ok (! -e $filename, 1, "removed any existing $filename");
 END {
   if (defined $filename) {
-    diag "Remove tempfile $filename";
+    MyTestHelpers::diag ("Remove tempfile ",$filename);
     unlink $filename
-      or diag "Oops, cannot remove $filename: $!";
+      or MyTestHelpers::diag ("Oops, cannot remove $filename: $!");
   }
 }
 
@@ -70,22 +76,22 @@ END {
                                               -height => 11,
                                               -hotx => 5,
                                               -hoty => 6);
-  is ($image->get('-drawable')->{'extras'}->{'hotSpotX'}, 5);
-  is ($image->get('-drawable')->{'extras'}->{'hotSpotY'}, 6);
+  ok ($image->get('-drawable')->{'extras'}->{'hotSpotX'}, 5);
+  ok ($image->get('-drawable')->{'extras'}->{'hotSpotY'}, 6);
   $image->save ($filename);
-  ok (-e $filename, "save() to $filename");
+  ok (-e $filename, 1, "save() to $filename");
 }
 {
   my $image = Image::Base::Prima::Image->new (-file => $filename);
-  is ($image->get('-file_format'), 'XPM',
+  ok ($image->get('-file_format'), 'XPM',
       'load() -file_format');
-  is ($image->get('-width'), 10,
+  ok ($image->get('-width'), 10,
       'load() -width');
-  is ($image->get('-height'), 11,
+  ok ($image->get('-height'), 11,
       'load() -height');
-  is ($image->get('-hotx'), 5,
+  ok ($image->get('-hotx'), 5,
       'load() -hotx');
-  is ($image->get('-hoty'), 6,
+  ok ($image->get('-hoty'), 6,
       'load() -hoty');
 }
 
@@ -100,13 +106,13 @@ END {
   $image->set (-hotx => undef,
                -hoty => undef);
   $image->save ($filename);
-  ok (-e $filename, "save() to $filename");
+  ok (-e $filename, 1, "save() to $filename");
 }
 {
   my $image = Image::Base::Prima::Image->new (-file => $filename);
-  is ($image->get('-hotx'), undef,
+  ok ($image->get('-hotx'), undef,
       'load() -hotx');
-  is ($image->get('-hoty'), undef,
+  ok ($image->get('-hoty'), undef,
       'load() -hoty');
 }
 

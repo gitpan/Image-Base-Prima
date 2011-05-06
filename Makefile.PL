@@ -41,7 +41,6 @@ MyMakeMakerExtras::WriteMakefile
                     # 'Prima::Image' => 0,    # in core, only Image.pod
 
                     'Test' => 0,
-                    'Test::More' => 0,
                    },
    # cf Prima 1.29 is 5.00502
    MIN_PERL_VERSION => '5.005',

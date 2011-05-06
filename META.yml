@@ -1,6 +1,6 @@
 --- #YAML:1.0
 name:               Image-Base-Prima
-version:            3
+version:            4
 abstract:           Image::Base drawing into Prima windows and images.
 author:
     - Kevin Ryde <user42@zip.com.au>
@@ -16,7 +16,6 @@ requires:
     Prima:         0
     Prima::noX11:  0
     Test:          0
-    Test::More:    0
 resources:
     homepage:  http://user42.tuxfamily.org/image-base-prima/index.html
     license:   http://www.gnu.org/licenses/gpl.html

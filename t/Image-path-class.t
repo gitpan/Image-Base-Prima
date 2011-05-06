@@ -19,7 +19,7 @@
 
 use 5.005;
 use strict;
-use Test::More;
+use Test;
 
 use lib 't';
 use MyTestHelpers;
@@ -28,39 +28,31 @@ BEGIN { MyTestHelpers::nowarnings() }
 # uncomment this to run the ### lines
 #use Smart::Comments;
 
-eval { require Path::Class }
-  or plan skip_all => "due to Path::Class not available -- $@";
-
 use Prima::noX11; # without connecting to the server
 use Prima;
-{
-  my $d = Prima::Image->new;
-  my $codecs = $d->codecs;
 
-  my $have_png = 0;
-  foreach my $codec (@$codecs) {
-    if ($codec->{'fileShortType'} eq 'PNG') {
-      $have_png = 1;
-    }
+my $test_count = 6;
+plan tests => $test_count;
+
+if (! eval { require Path::Class; 1 }) {
+  MyTestHelpers::diag ("Path::Class not available -- $@");
+  foreach (1 .. $test_count) {
+    skip ('due to Path::Class not available', 1, 1);
   }
-  if (! $have_png) {
-    plan skip_all => "due to no PNG codec";
-  }
+  exit 0;
 }
 
-plan tests => 6;
 require Image::Base::Prima::Image;
 
-
 my $filename = Path::Class::File->new('tempfile.png');
+MyTestHelpers::diag ("Tempfile ",ref($filename)," stringize $filename");
 unlink $filename;
-ok (! -e $filename, "remove any existing $filename");
-diag "Tempfile ",ref($filename)," stringize $filename";
+ok (! -e $filename, 1, "removed any existing $filename");
 END {
   if (defined $filename) {
-    diag "Remove tempfile $filename";
+    MyTestHelpers::diag ("Remove tempfile ",$filename);
     unlink $filename
-      or diag "Oops, cannot remove $filename: $!";
+      or MyTestHelpers::diag ("Oops, cannot remove $filename: $!");
   }
 }
 
@@ -71,17 +63,17 @@ END {
   my $prima_image = Prima::Image->new (width => 10, height => 10);
   my $image = Image::Base::Prima::Image->new (-drawable => $prima_image);
   $image->save ($filename);
-  ok (-e $filename, "save() to $filename");
+  ok (-e $filename, 1, "save() to $filename");
 }
 {
   my $image = Image::Base::Prima::Image->new (-file => $filename);
-  is ($image->get('-file_format'), 'PNG',
+  ok ($image->get('-file_format'), 'PNG',
      'load() with new(-file)');
 }
 {
   my $image = Image::Base::Prima::Image->new;
   $image->load ($filename);
-  is ($image->get('-file_format'), 'PNG',
+  ok ($image->get('-file_format'), 'PNG',
       'load() method');
 }
 
@@ -93,11 +85,11 @@ END {
   my $image = Image::Base::Prima::Image->new (-drawable => $prima_image,
                                               -file_format => 'jpeg');
   $image->save ($filename);
-  ok (-e $filename, "save() -file_format \"jpeg\" to $filename");
+  ok (-e $filename, 1, "save() -file_format \"jpeg\" to $filename");
 }
 {
   my $image = Image::Base::Prima::Image->new (-file => $filename);
-  is ($image->get('-file_format'), 'JPEG',
+  ok ($image->get('-file_format'), 'JPEG',
       'new(-file) get written -file_format');
 }
 

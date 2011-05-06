@@ -19,32 +19,42 @@
 
 use 5.005;
 use strict;
-use Test::More;
+use Test;
 
 use lib 't';
 use MyTestHelpers;
 BEGIN { MyTestHelpers::nowarnings() }
 
-eval { require Prima }
-  or plan skip_all => "due to no Prima initialize -- $@";
+my $test_count = 1485;
+plan tests => $test_count;
 
-plan tests => 1485;
+# Test::Weaken 3 for "contents"
+if (! eval { require Prima }) {
+  MyTestHelpers::diag ("no Prima initialize -- $@");
+  foreach (1 .. $test_count) {
+    skip ('no Prima initialize', 1, 1);
+  }
+  exit 0;
+}
+
 require Image::Base::Prima::Drawable;
 
 
 #------------------------------------------------------------------------------
 # VERSION
 
-my $want_version = 3;
-is ($Image::Base::Prima::Drawable::VERSION,
+my $want_version = 4;
+ok ($Image::Base::Prima::Drawable::VERSION,
     $want_version, 'VERSION variable');
-is (Image::Base::Prima::Drawable->VERSION,
+ok (Image::Base::Prima::Drawable->VERSION,
     $want_version, 'VERSION class method');
 
 ok (eval { Image::Base::Prima::Drawable->VERSION($want_version); 1 },
+    1,
     "VERSION class check $want_version");
 my $check_version = $want_version + 1000;
 ok (! eval { Image::Base::Prima::Drawable->VERSION($check_version); 1 },
+    1,
     "VERSION class check $check_version");
 
 #------------------------------------------------------------------------------
@@ -52,17 +62,17 @@ ok (! eval { Image::Base::Prima::Drawable->VERSION($check_version); 1 },
 
 {
   my $prima_image = Prima::Image->new (width => 10, height => 10);
-  diag "linePattern ", $prima_image->linePattern;
-  diag "lineWidth ", $prima_image->lineWidth;
+  MyTestHelpers::diag ("linePattern ", $prima_image->linePattern);
+  MyTestHelpers::diag ("lineWidth ", $prima_image->lineWidth);
 
   my $image = Image::Base::Prima::Drawable->new
     (-drawable => $prima_image);
   $prima_image->begin_paint;
 
   $image->xy (2,2, 'black');
-  is ($image->xy (2,2), '#000000');
+  ok ($image->xy (2,2), '#000000');
   $image->xy (2,2, 'white');
-  is ($image->xy (2,2), '#FFFFFF');
+  ok ($image->xy (2,2), '#FFFFFF');
 
   # require MyTestImageBase;
   # MyTestImageBase::dump_image($image);
@@ -79,11 +89,11 @@ ok (! eval { Image::Base::Prima::Drawable->VERSION($check_version); 1 },
   $prima_image->begin_paint;
 
   $image->rectangle (0,0, 9,9, 'black', 1);
-  is ($image->xy (0,0), '#000000');
-  is ($image->xy (9,9), '#000000');
+  ok ($image->xy (0,0), '#000000');
+  ok ($image->xy (9,9), '#000000');
   $image->rectangle (0,0, 9,9, 'white', 1);
-  is ($image->xy (0,0), '#FFFFFF');
-  is ($image->xy (9,9), '#FFFFFF');
+  ok ($image->xy (0,0), '#FFFFFF');
+  ok ($image->xy (9,9), '#FFFFFF');
 
   # require MyTestImageBase;
   # MyTestImageBase::dump_image($image);
@@ -98,9 +108,9 @@ ok (! eval { Image::Base::Prima::Drawable->VERSION($check_version); 1 },
 
   # unfilled one pixel
   $image->rectangle (2,2, 2,2, 'black');
-  is ($image->xy (2,2), '#000000');
+  ok ($image->xy (2,2), '#000000');
   $image->rectangle (2,2, 2,2, 'white');
-  is ($image->xy (2,2), '#FFFFFF');
+  ok ($image->xy (2,2), '#FFFFFF');
 
   # require MyTestImageBase;
   # MyTestImageBase::dump_image($image);
@@ -118,9 +128,9 @@ ok (! eval { Image::Base::Prima::Drawable->VERSION($check_version); 1 },
 
   # unfilled one pixel
   $image->ellipse (2,2, 2,2, 'black');
-  is ($image->xy (2,2), '#000000');
+  ok ($image->xy (2,2), '#000000');
   $image->ellipse (2,2, 2,2, 'white');
-  is ($image->xy (2,2), '#FFFFFF');
+  ok ($image->xy (2,2), '#FFFFFF');
 
   # require MyTestImageBase;
   # MyTestImageBase::dump_image($image);
@@ -137,9 +147,9 @@ ok (! eval { Image::Base::Prima::Drawable->VERSION($check_version); 1 },
   $prima_image->begin_paint;
 
   $image->line (2,2, 2,2, 'black');
-  is ($image->xy (2,2), '#000000');
+  ok ($image->xy (2,2), '#000000');
   $image->line (2,2, 2,2, 'white');
-  is ($image->xy (2,2), '#FFFFFF');
+  ok ($image->xy (2,2), '#FFFFFF');
 
   # require MyTestImageBase;
   # MyTestImageBase::dump_image($image);
@@ -152,9 +162,9 @@ ok (! eval { Image::Base::Prima::Drawable->VERSION($check_version); 1 },
   $prima_image->begin_paint;
 
   $image->line (0,0, 0,0, 'black');
-  is ($image->xy (0,0), '#000000');
+  ok ($image->xy (0,0), '#000000');
   $image->line (0,0, 0,0, 'white');
-  is ($image->xy (0,0), '#FFFFFF');
+  ok ($image->xy (0,0), '#FFFFFF');
 
   # require MyTestImageBase;
   # MyTestImageBase::dump_image($image);
@@ -168,8 +178,8 @@ ok (! eval { Image::Base::Prima::Drawable->VERSION($check_version); 1 },
   my $prima_image = Prima::Image->new (width => 21, height => 10);
   my $image = Image::Base::Prima::Drawable->new
     (-drawable => $prima_image);
-  is ($image->get('-width'),  21);
-  is ($image->get('-height'), 10);
+  ok ($image->get('-width'),  21);
+  ok ($image->get('-height'), 10);
 
   require MyTestImageBase;
   $prima_image->begin_paint;

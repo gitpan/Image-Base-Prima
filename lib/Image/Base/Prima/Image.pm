@@ -31,7 +31,7 @@ use vars '$VERSION', '@ISA';
 use Image::Base::Prima::Drawable;
 @ISA = ('Image::Base::Prima::Drawable');
 
-$VERSION = 3;
+$VERSION = 4;
 
 # uncomment this to run the ### lines
 #use Smart::Comments '###';

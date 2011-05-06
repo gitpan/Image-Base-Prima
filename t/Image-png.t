@@ -19,7 +19,7 @@
 
 use 5.005;
 use strict;
-use Test::More;
+use Test;
 
 use lib 't';
 use MyTestHelpers;
@@ -30,10 +30,15 @@ BEGIN { MyTestHelpers::nowarnings() }
 
 use Prima::noX11; # without connecting to the server
 use Prima;
+
+my $test_count = 17;
+plan tests => $test_count;
+
 {
   my $d = Prima::Image->new;
   my $codecs = $d->codecs;
-  diag "codecs: ",join(' ',map {$_->{'fileShortType'}} @$codecs);
+  MyTestHelpers::diag ("codecs: ",
+                       join(' ',map {$_->{'fileShortType'}} @$codecs));
 
   my $have_png = 0;
   foreach my $codec (@$codecs) {
@@ -42,11 +47,12 @@ use Prima;
     }
   }
   if (! $have_png) {
-    plan skip_all => "due to no PNG codec";
+    foreach (1 .. $test_count) {
+      skip ('due to no PNG codec', 1, 1);
+    }
+    exit 0;
   }
 }
-
-plan tests => 17;
 
 require Image::Base::Prima::Image;
 
@@ -54,14 +60,14 @@ require Image::Base::Prima::Image;
 # load() errors
 
 my $filename = 'tempfile.png';
-diag "Tempfile $filename";
+MyTestHelpers::diag ("Tempfile ", $filename);
 unlink $filename;
-ok (! -e $filename, "removed any existing $filename");
+ok (! -e $filename, 1, "removed any existing $filename");
 END {
   if (defined $filename) {
-    diag "Remove tempfile $filename";
+    MyTestHelpers::diag ("Remove tempfile ",$filename);
     unlink $filename
-      or diag "Oops, cannot remove $filename: $!";
+      or MyTestHelpers::diag ("Oops, cannot remove $filename: $!");
   }
 }
 
@@ -74,10 +80,11 @@ END {
     $image
   };
   my $err = $@;
-  diag "new() err is \"",$err,"\"";
-  is ($eval_ok, 0, 'new() error for no file - doesn\'t reach end');
-  is ($ret, undef, 'new() error for no file - return undef');
-  like ($err, '/^Cannot/', 'new() error for no file - error string "Cannot"');
+  MyTestHelpers::diag ("new() err is \"",$err,"\"");
+  ok ($eval_ok, 0, 'new() error for no file - doesn\'t reach end');
+  ok ($ret, undef, 'new() error for no file - return undef');
+  ok (!! scalar($err =~ /^Cannot/), 1,
+      'new() error for no file - error string "Cannot"');
 }
 {
   my $eval_ok = 0;
@@ -88,10 +95,11 @@ END {
     $image
   };
   my $err = $@;
-  diag "load() err is \"",$err,"\"";
-  is ($eval_ok, 0, 'load() error for no file - doesn\'t reach end');
-  is ($ret, undef, 'load() error for no file - return undef');
-  like ($err, '/^Cannot/', 'load() error for no file - error string "Cannot"');
+  MyTestHelpers::diag ("load() err is \"",$err,"\"");
+  ok ($eval_ok, 0, 'load() error for no file - doesn\'t reach end');
+  ok ($ret, undef, 'load() error for no file - return undef');
+  ok (!! scalar($err =~ /^Cannot/), 1,
+      'load() error for no file - error string "Cannot"');
 }
 
 #-----------------------------------------------------------------------------
@@ -111,10 +119,11 @@ SKIP: {
     $image
   };
   my $err = $@;
-  diag "save() err is \"",$err,"\"";
-  is ($eval_ok, 0, 'save() error for no dir - doesn\'t reach end');
-  is ($ret, undef, 'save() error for no dir - return undef');
-  like ($err, '/^Cannot/', 'save() error for no dir - error string "Cannot"');
+  MyTestHelpers::diag ("save() err is \"",$err,"\"");
+  ok ($eval_ok, 0, 'save() error for no dir - doesn\'t reach end');
+  ok ($ret, undef, 'save() error for no dir - return undef');
+  ok (!! scalar($err =~ /^Cannot/), 1,
+      'save() error for no dir - error string "Cannot"');
 }
 
 
@@ -125,17 +134,17 @@ SKIP: {
   my $prima_image = Prima::Image->new (width => 10, height => 10);
   my $image = Image::Base::Prima::Image->new (-drawable => $prima_image);
   $image->save ($filename);
-  ok (-e $filename, "save() to $filename");
+  ok (-e $filename, 1, "save() to $filename");
 }
 {
   my $image = Image::Base::Prima::Image->new (-file => $filename);
-  is ($image->get('-file_format'), 'PNG',
+  ok ($image->get('-file_format'), 'PNG',
      'load() with new(-file)');
 }
 {
   my $image = Image::Base::Prima::Image->new;
   $image->load ($filename);
-  is ($image->get('-file_format'), 'PNG',
+  ok ($image->get('-file_format'), 'PNG',
       'load() method');
 }
 
@@ -147,11 +156,11 @@ SKIP: {
   my $image = Image::Base::Prima::Image->new (-drawable => $prima_image,
                                               -file_format => 'jpeg');
   $image->save ($filename);
-  ok (-e $filename);
+  ok (-e $filename, 1);
 }
 {
   my $image = Image::Base::Prima::Image->new (-file => $filename);
-  is ($image->get('-file_format'), 'JPEG',
+  ok ($image->get('-file_format'), 'JPEG',
       'written to explicit -file_format not per extension');
 }
 
@@ -165,7 +174,7 @@ SKIP: {
   open OUT, "> $filename" or die;
   $image->save_fh (\*OUT);
   close OUT or die;
-  ok (-s $filename, 'save_fh() not empty');
+  ok (-s $filename > 0, 1, 'save_fh() not empty');
 }
 
 #------------------------------------------------------------------------------
@@ -176,7 +185,7 @@ SKIP: {
   open IN, "< $filename" or die;
   $image->load_fh (\*IN);
   close IN or die;
-  is ($image->get('-file_format'), 'PNG',
+  ok ($image->get('-file_format'), 'PNG',
       'load_fh() -file_format');
 }
 
