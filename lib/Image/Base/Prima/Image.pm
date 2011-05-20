@@ -17,7 +17,10 @@
 
 
 # A -quality_percent could set the "quality" parameter for jpeg codec saves.
-# cf Image::Base::Imager and Image::Base::Gtk2::Gdk::Pixbuf might have similar.
+# cf similar for
+#     Image::Base::Imager
+#     Image::Base::Gtk2::Gdk::Pixbuf
+#     Image::Base::Magick
 #
 
 
@@ -31,7 +34,7 @@ use vars '$VERSION', '@ISA';
 use Image::Base::Prima::Drawable;
 @ISA = ('Image::Base::Prima::Drawable');
 
-$VERSION = 4;
+$VERSION = 5;
 
 # uncomment this to run the ### lines
 #use Smart::Comments '###';

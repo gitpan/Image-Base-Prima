@@ -362,7 +362,7 @@ sub check_ellipse {
     foreach my $fillaref ([], [1]) {
       my $fill = ($fillaref->[0] || 0);
       my $name = "ellipse $x1,$y1, $x2,$y2, fill=$fill";
-      MyTestHelpers::diag($name);
+      # MyTestHelpers::diag($name);
 
       # if ($options{'base_ellipse'}
       #     || $basefunc->($x1,$y1, $x2,$y2)) {

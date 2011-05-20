@@ -30,6 +30,7 @@ BEGIN { MyTestHelpers::nowarnings() }
 
 use Prima::noX11; # without connecting to the server
 use Prima;
+MyTestHelpers::diag ("Prima version ",Prima->VERSION);
 
 my $test_count = 17;
 plan tests => $test_count;
@@ -105,10 +106,7 @@ END {
 #-----------------------------------------------------------------------------
 # save() errors
 
-SKIP: {
-  eval { Prima->VERSION(1.29); 1 }
-    or skip 'due to save() segvs before Prima 1.29, have only'.Prima->VERSION,
-      3;
+if (eval { Prima->VERSION(1.29); 1 }) {
   my $eval_ok = 0;
   my $nosuchdir = 'no/such/directory/foo.png';
   my $image = Image::Base::Prima::Image->new (-width => 1,
@@ -124,6 +122,10 @@ SKIP: {
   ok ($ret, undef, 'save() error for no dir - return undef');
   ok (!! scalar($err =~ /^Cannot/), 1,
       'save() error for no dir - error string "Cannot"');
+} else {
+  skip (1,0,0, 'due to save() segvs before Prima 1.29, have only'.Prima->VERSION);
+  skip (1,0,0, 'due to save() segvs before Prima 1.29, have only'.Prima->VERSION);
+  skip (1,0,0, 'due to save() segvs before Prima 1.29, have only'.Prima->VERSION);
 }
 
 

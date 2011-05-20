@@ -31,7 +31,7 @@ BEGIN { MyTestHelpers::nowarnings() }
 use Prima::noX11; # without connecting to the server
 use Prima;
 
-my $test_count = 6;
+my $test_count = 4;
 plan tests => $test_count;
 
 if (! eval { require Path::Class; 1 }) {
@@ -42,9 +42,28 @@ if (! eval { require Path::Class; 1 }) {
   exit 0;
 }
 
+{
+  my $d = Prima::Image->new;
+  my $codecs = $d->codecs;
+  MyTestHelpers::diag ("codecs: ",
+                       join(' ',map {$_->{'fileShortType'}} @$codecs));
+  my $have_bmp = 0;
+  foreach my $codec (@$codecs) {
+    if ($codec->{'fileShortType'} eq 'BMP') {
+      $have_bmp = 1;
+    }
+  }
+  if (! $have_bmp) {
+    foreach (1 .. $test_count) {
+      skip ('due to no BMP codec', 1, 1);
+    }
+    exit 0;
+  }
+}
+
 require Image::Base::Prima::Image;
 
-my $filename = Path::Class::File->new('tempfile.png');
+my $filename = Path::Class::File->new('tempfile.bmp');
 MyTestHelpers::diag ("Tempfile ",ref($filename)," stringize $filename");
 unlink $filename;
 ok (! -e $filename, 1, "removed any existing $filename");
@@ -61,36 +80,21 @@ END {
 
 {
   my $prima_image = Prima::Image->new (width => 10, height => 10);
-  my $image = Image::Base::Prima::Image->new (-drawable => $prima_image);
+  my $image = Image::Base::Prima::Image->new (-drawable => $prima_image,
+-file_format => 'BMP');
   $image->save ($filename);
-  ok (-e $filename, 1, "save() to $filename");
+  ok (-e $filename, 1, "save() -file_format \"BMP\" to $filename");
 }
 {
   my $image = Image::Base::Prima::Image->new (-file => $filename);
-  ok ($image->get('-file_format'), 'PNG',
+  ok ($image->get('-file_format'), 'BMP',
      'load() with new(-file)');
 }
 {
   my $image = Image::Base::Prima::Image->new;
   $image->load ($filename);
-  ok ($image->get('-file_format'), 'PNG',
+  ok ($image->get('-file_format'), 'BMP',
       'load() method');
-}
-
-#------------------------------------------------------------------------------
-# save() -file_format
-
-{
-  my $prima_image = Prima::Image->new (width => 10, height => 10);
-  my $image = Image::Base::Prima::Image->new (-drawable => $prima_image,
-                                              -file_format => 'jpeg');
-  $image->save ($filename);
-  ok (-e $filename, 1, "save() -file_format \"jpeg\" to $filename");
-}
-{
-  my $image = Image::Base::Prima::Image->new (-file => $filename);
-  ok ($image->get('-file_format'), 'JPEG',
-      'new(-file) get written -file_format');
 }
 
 exit 0;
