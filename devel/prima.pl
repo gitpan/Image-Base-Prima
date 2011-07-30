@@ -28,6 +28,79 @@ use Prima;
 use Smart::Comments;
 
 {
+  printf "white %X\n", cl::White();
+  my $coderef = cl->can('White');
+  printf "white coderef %s  %X\n", $coderef, &$coderef();
+
+  require Image::Base::Prima::Drawable;
+  my $d = Prima::Image->create (width => 100,
+                                height => 100,
+                                type => im::bpp8(),
+                                # type => im::RGB(),
+                               );
+  # $d-> palette([0,255,0],[255,255,255], [0xFF,0x00,0xFF], [0x00,0xFF,0x00]);
+  # $d-> palette([0,255,0, 255,255,255, 0xFF,0x00,0xFF, 0x00,0xFF,0x00]);
+  # $d-> palette(0x000000, 0xFF00FF, 0xFFFFFF, 0x00FF00);
+  ### palette: $d-> palette
+
+  ### bpp: $d->get_bpp
+
+  my $image = Image::Base::Prima::Drawable->new
+    (-drawable => $d);
+  print "width ", $image->get('-width'), "\n";
+  $image->set('-width',60);
+  $image->set('-height',40);
+  print "width ", $image->get('-width'), "\n";
+
+  $d->begin_paint;
+  $d->color (cl::Black());
+  $d->bar (0,0, 60,40);
+  # $image->ellipse(1,1, 18,8, 'white');
+  # $image->ellipse(1,1, 5,3, 'white', 1);
+  # $image->xy(6,4, 'white');
+
+  $image->diamond(1,1, 51,31, 'white', 0);
+  $image->rectangle(0,0,10,10, 'green');
+
+  # $image->xy(0,0, '#00FF00');
+  # $image->xy(1,1, '#FFFF0000FFFF');
+  # print "xy ", $image->xy(0,0), "\n";
+  # say $d->pixel(0,0);
+
+  $d->end_paint;
+  $d-> save('/tmp/foo.gif') or die "Error saving:$@\n";
+  system "xzgv -z /tmp/foo.gif";
+  exit 0;
+}
+
+{
+  # jpeg compression on save()
+  #
+  require Image::Base::Prima::Image;
+  my $image = Image::Base::Prima::Image->new
+    (-width => 200,
+     -height => 100,
+     -file => '/usr/share/doc/texlive-doc/dvipdfm/mwicks.jpeg');
+
+  # my $image = Image::Base::Prima::Image->new
+  #   (-width => 200,
+  #    -height => 100,
+  #    -file_format => 'jpeg');
+
+  $image->ellipse (1,1, 100,50, 'green');
+  $image->ellipse (100,50, 199,99, '#123456');
+  $image->line (1,99, 199,0, 'red');
+  $image->line (1,0, 199,99, '#654321');
+
+  $image->set (-quality_percent => 1);
+  $image->save ('/tmp/x-001.jpeg');
+  $image->set (-quality_percent => 100);
+  $image->save ('/tmp/x-100.jpeg');
+  system "ls -l /tmp/x*";
+  exit 0;
+}
+
+{
   my $d = Prima::Image->create (width => 1,
                                 height => 1,
                                );
@@ -50,49 +123,7 @@ use Smart::Comments;
   exit 0;
 }
 
-{
-  printf "white %X\n", cl::White();
-  my $coderef = cl->can('White');
-  printf "white coderef %s  %X\n", $coderef, &$coderef();
 
-  require Image::Base::Prima::Drawable;
-  my $d = Prima::Image->create (width => 100,
-                                height => 100,
-                                type => im::bpp8(),
-                                # type => im::RGB(),
-                               );
-  # $d-> palette([0,255,0],[255,255,255], [0xFF,0x00,0xFF], [0x00,0xFF,0x00]);
-  # $d-> palette([0,255,0, 255,255,255, 0xFF,0x00,0xFF, 0x00,0xFF,0x00]);
-  # $d-> palette(0x000000, 0xFF00FF, 0xFFFFFF, 0x00FF00);
-  ### palette: $d-> palette
-
-  ### bpp: $d->get_bpp
-
-  my $image = Image::Base::Prima::Drawable->new
-    (-drawable => $d);
-  print "width ", $image->get('-width'), "\n";
-  $image->set('-width',20);
-  $image->set('-height',10);
-  print "width ", $image->get('-width'), "\n";
-
-  $d->begin_paint;
-  $d->color (cl::Black());
-  $d->bar (0,0, 20,10);
-  # $image->ellipse(1,1, 18,8, 'white');
-  $image->ellipse(1,1, 5,3, 'white', 1);
-  # $image->xy(6,4, 'white');
-   $image->rectangle(0,0,10,10, 'green');
-
-  # $image->xy(0,0, '#00FF00');
-  # $image->xy(1,1, '#FFFF0000FFFF');
-  # print "xy ", $image->xy(0,0), "\n";
-  # say $d->pixel(0,0);
-
-  $d->end_paint;
-  $d-> save('/tmp/foo.gif') or die "Error saving:$@\n";
-  system "xzgv -z /tmp/foo.gif";
-  exit 0;
-}
 
 
 

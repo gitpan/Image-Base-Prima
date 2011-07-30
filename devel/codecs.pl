@@ -32,7 +32,7 @@ use Smart::Comments;
   use Prima::Const;
 
   my $d = Prima::Image->new;
-  $d = Prima::Image->load('/usr/share/emacs/23.2/etc/images/icons/hicolor/16x16/apps/emacs.png',
+  $d = Prima::Image->load('/usr/share/emacs/23.3/etc/images/icons/hicolor/16x16/apps/emacs.png',
                           loadExtras => 1);
   ### width: $d->width
   ### heightwidth: $d->height

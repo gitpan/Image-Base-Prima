@@ -61,5 +61,10 @@ MyMakeMakerExtras::WriteMakefile
          requires => { 'Smart::Comments'     => 0,
                      },
        },
+       maximum_tests =>
+       { description => 'Have "make test" do as much as possible.',
+         requires => { 'Test::Weaken' => '2.000',
+                     },
+       },
      },
    });

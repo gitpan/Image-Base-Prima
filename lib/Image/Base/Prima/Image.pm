@@ -16,14 +16,6 @@
 # with Image-Base-Prima.  If not, see <http://www.gnu.org/licenses/>.
 
 
-# A -quality_percent could set the "quality" parameter for jpeg codec saves.
-# cf similar for
-#     Image::Base::Imager
-#     Image::Base::Gtk2::Gdk::Pixbuf
-#     Image::Base::Magick
-#
-
-
 package Image::Base::Prima::Image;
 use 5.005;
 use strict;
@@ -34,7 +26,7 @@ use vars '$VERSION', '@ISA';
 use Image::Base::Prima::Drawable;
 @ISA = ('Image::Base::Prima::Drawable');
 
-$VERSION = 5;
+$VERSION = 6;
 
 # uncomment this to run the ### lines
 #use Smart::Comments '###';
@@ -174,7 +166,10 @@ sub save {
 
   # uses $im->{'extras'}->{'codecID'} if set, otherwise filename extension
   # stringize against refs like Path::Class
-  $self->{'-drawable'}->save ("$filename")
+  $self->{'-drawable'}->save ("$filename",
+                              (defined $self->{'-quality_percent'}
+                               ? (quality => $self->{'-quality_percent'})
+                               : ()))
     or croak "Cannot save $filename: ",$@;
 }
 
@@ -218,8 +213,8 @@ C<Image::Base::Prima::Image> extends C<Image::Base> to create and draw into
 C<Prima::Image> objects, including file loading and saving.
 
 See C<Image::Base::Prima::Drawable> for the drawing operations.  This
-subclass adds image creation and file load/save.  C<begin_paint> /
-C<end_paint> bracketing is still necessary.
+subclass adds image creation and file load/save.  C<begin_paint()> /
+C<end_paint()> bracketing is still necessary.
 
 As of Prima 1.28 the supported file formats for both read and write include
 PNG, JPEG, TIFF, GIF, XBM, XPM and BMP.  Prima on X11 draws using the X
@@ -245,7 +240,7 @@ Or an existing C<Prima::Image> object can be given
     $ibase = Image::Base::Prima::Image->new
                (-drawable => $prima_image);
 
-=item C<$image-E<gt>load>
+=item C<$image-E<gt>load ()>
 
 =item C<$image-E<gt>load ($filename)>
 
@@ -255,7 +250,7 @@ The Prima C<loadExtras> option is used so as to get the file format
 C<codecID> in the underlying image, and any possible "hotspot" for C<-hotx>
 and C<-hoty> below (L</ATTRIBUTES>).
 
-=item C<$image-E<gt>save>
+=item C<$image-E<gt>save ()>
 
 =item C<$image-E<gt>save ($filename)>
 
@@ -296,6 +291,15 @@ The cursor hotspot in images with that attribute.  These are the C<hotSpotX>
 and C<hotSpotY> extra in the C<$primaimage-E<gt>{'extras'}> (see
 L<Prima::codecs> and L<Prima::image-load/Querying extra information>).  As
 of Prima 1.29 they're available from XPM and XBM format files.
+
+=item C<-quality_percent> (0 to 100 or C<undef>)
+
+The image quality when saving to JPEG format.  JPEG compresses by reducing
+colours and resolution in ways that are not too noticeable to the human eye.
+100 means full quality, no such reductions.  C<undef> means the Prima
+default, which is 75.
+
+This becomes the C<quality> parameter to C<$primaimage-E<gt>save()>.
 
 =back
 

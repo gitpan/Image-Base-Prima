@@ -16,6 +16,11 @@
 # with Image-Base-Prima.  If not, see <http://www.gnu.org/licenses/>.
 
 
+# Prima::Drawable -- drawing operations
+#
+# fillpoly()
+# polyline()
+
 package Image::Base::Prima::Drawable;
 use 5.005;
 use strict;
@@ -25,7 +30,7 @@ use vars '$VERSION', '@ISA';
 use Image::Base;
 @ISA = ('Image::Base');
 
-$VERSION = 5;
+$VERSION = 6;
 
 # uncomment this to run the ### lines
 #use Smart::Comments '###';
@@ -145,6 +150,50 @@ sub ellipse {
   }
 }
 
+sub diamond {
+  my ($self, $x1, $y1, $x2, $y2, $colour, $fill) = @_;
+  ### Drawable diamond(): $x1, $y1, $x2, $y2, $colour
+
+  my $drawable = $self->{'-drawable'};
+  $y1 = $drawable->height - 1 - $y1;
+  $y2 = $drawable->height - 1 - $y2;
+
+  if ($x1==$x2 && $y1==$y2) {
+    # 1x1 polygon draws nothing, do it as a point instead
+    $drawable->pixel ($x1,$y1, $self->colour_to_pixel($colour));
+
+  } else {
+    _set_colour($self,$colour);
+
+    my $xh = ($x2 - $x1 + 1);
+    my $yh = ($y1 - $y2 + 1);
+    my $xeven = ! ($xh & 1);
+    my $yeven = ! ($yh & 1);
+    $xh = int($xh / 2);
+    $yh = int($yh / 2);
+    my $poly = [$x1+$xh, $y1,  # top centre
+
+                # left
+                $x1, $y1-$yh,
+                ($yeven ? ($x1, $y2+$yh) : ()),
+
+                # bottom
+                $x1+$xh, $y2,
+                ($xeven ? ($x2-$xh, $y2) : ()),
+
+                # right
+                ($yeven ? ($x2, $y2+$yh) : ()),
+                $x2, $y1-$yh,
+
+                ($xeven ? ($x2-$xh, $y1) : ()),
+                $x1+$xh, $y1];  # back to start in X11 PolyLine style
+    if ($fill) {
+      $drawable->fillpoly ($poly) or croak $@;
+    }
+    $drawable->polyline ($poly) or croak $@;
+  }
+}
+
 sub _set_colour {
   my ($self, $colour) = @_;
   my $drawable = $self->{'-drawable'};
@@ -161,7 +210,8 @@ sub colour_to_pixel {
   my ($self, $colour) = @_;
   ### colour_to_pixel(): $colour
 
-  # Crib: [:xdigit:] new in 5.6, so just 0-9A-F for now
+  # Crib: [:xdigit:] new in 5.6, so only 0-9A-F, and in any case as of perl
+  # 5.12.4 [:xdigit:] matches some wide chars but hex() doesn't accept them
   if ($colour =~ /^#([0-9A-F]{6})$/i) {
     return hex(substr($colour,1));
   }

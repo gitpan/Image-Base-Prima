@@ -36,7 +36,7 @@ require Image::Base::Prima::Image;
 #------------------------------------------------------------------------------
 # VERSION
 
-my $want_version = 5;
+my $want_version = 6;
 ok ($Image::Base::Prima::Image::VERSION,
     $want_version, 'VERSION variable');
 ok (Image::Base::Prima::Image->VERSION,
