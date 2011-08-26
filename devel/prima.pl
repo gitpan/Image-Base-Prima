@@ -21,11 +21,30 @@ use 5.010;
 use strict;
 use warnings;
 # use blib "$ENV{HOME}/perl/prima/Prima-1.29/blib";
-use lib "$ENV{HOME}/perl/prima/Prima-1.29/inst/local/lib/perl/5.10.1/";
+# use lib "$ENV{HOME}/perl/prima/Prima-1.29/inst/local/lib/perl/5.10.1/";
 # use Prima::noX11;
 use Prima;
 
 use Smart::Comments;
+
+
+{
+  require Image::Base::Prima::Image;
+  my $image = Image::Base::Prima::Image->new (-width => 50, -height => 20,
+                                              -file_format => 'xpm');
+  $image->rectangle (0,0, 49,29, 'black');
+  my $d = $image->get('-drawable');
+  $d->begin_paint;
+
+  $image->diamond (1,1,6,6, 'white');
+  $image->diamond (11,1,16,6, 'white', 1);
+  $image->diamond (1,10,7,16, 'white');
+  $image->diamond (11,10,17,16, 'white', 1);
+  $d->end_paint;
+
+  $image->save('/dev/stdout');
+  exit 0;
+}
 
 {
   printf "white %X\n", cl::White();

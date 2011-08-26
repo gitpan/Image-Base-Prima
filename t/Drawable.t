@@ -43,7 +43,7 @@ require Image::Base::Prima::Drawable;
 #------------------------------------------------------------------------------
 # VERSION
 
-my $want_version = 6;
+my $want_version = 7;
 ok ($Image::Base::Prima::Drawable::VERSION,
     $want_version, 'VERSION variable');
 ok (Image::Base::Prima::Drawable->VERSION,

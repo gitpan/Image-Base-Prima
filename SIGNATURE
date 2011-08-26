@@ -15,12 +15,12 @@ not run its Makefile.PL or Build.PL.
 Hash: SHA1
 
 SHA1 842745cb706f8f2126506f544492f7a80dbe29b3 COPYING
-SHA1 b7ac977bc63212921c06cc6af0cc11d9278778ab Changes
+SHA1 5bfdae8edc6fb85ace72689044d4ccf31ee10b15 Changes
 SHA1 01927fc2c0f7bd2897738f618ef61eb7e347d478 MANIFEST
 SHA1 1d745ef4cc154d3b13bfee6d1048ac4135fc1aa7 MANIFEST.SKIP
-SHA1 c6b1379623816aaa566b35b07349a425e3c280d1 META.yml
+SHA1 944809230b67b7f74fff4616eaa3d657dafc1d68 META.yml
 SHA1 a832919bbe8efb6a1e6bcf1e8f882556eb997335 Makefile.PL
-SHA1 1f60088cc968c999a6157f0262d650c286ed2df8 debian/changelog
+SHA1 001b4fe3d4482d7c7511b875e8f6a832143442df debian/changelog
 SHA1 ac3478d69a3c81fa62e60f5c3696165a4e5e6ac4 debian/compat
 SHA1 2dd486a4ffb4422b75c671c22b197c8b9766b249 debian/control
 SHA1 d1bc8be46f4b821221f4c1812f1de888fc07a064 debian/copyright
@@ -31,19 +31,19 @@ SHA1 fe45b60f6fa9dad27e4e39b5b33bf8b2d4a9ab61 devel/codecs.pl
 SHA1 4920698cda0df218321d9e553927c81d2ec97c38 devel/hotspot.pl
 SHA1 27bb5c2574bd0fb7c457942411eb771d22dc1de7 devel/image-nox11-pixel.pl
 SHA1 4f045d7384c37834e20db6bdbccd2f86a06c6781 devel/image-nox11.pl
-SHA1 836b926f8088bea8778896c2178cbd13fc21fe9e devel/prima.pl
-SHA1 d34492ea04ab0f004fbb3c5ca8a6bd42a216844e inc/MyMakeMakerExtras.pm
+SHA1 44accc9b96bc40f2e040d569fd7930005d8ca083 devel/prima.pl
+SHA1 e49e071a43390ddb233272dbf39fbaf2947b1cd6 inc/MyMakeMakerExtras.pm
 SHA1 7a988b2aa7ed09f1cb9029a1ef3f0e2139dca0cf inc/my_pod2html
-SHA1 17779335560d6d214de0a2d816c8ba9b2603d957 lib/Image/Base/Prima/Drawable.pm
-SHA1 7d93341c8bdee0b1c40c501d29a0439fb0ca4689 lib/Image/Base/Prima/Image.pm
+SHA1 ef67b583eea0c38d47e6bccb00b9212b71ee977b lib/Image/Base/Prima/Drawable.pm
+SHA1 6ec329522a8903d6c91a2fde25fb0ad27f75277a lib/Image/Base/Prima/Image.pm
 SHA1 a8a0c610003938ffbd461cfc952d36e7b8f90b1d t/Drawable-load.t
-SHA1 1605a2c49d7ad5b6d8a108cc593a1b12e388be36 t/Drawable.t
+SHA1 d5403beb53228f2c9c0c5dd097be9de2eddfe6ef t/Drawable.t
 SHA1 41af7341aee16893910a8187e17ba59b0dc6fa34 t/Image-load.t
 SHA1 3ce76ae60780dc766c63744563ac148ce9f68447 t/Image-path-class.t
 SHA1 947d2f74720a3e1290a9cbafac5301e693947960 t/Image-png.t
 SHA1 716b1548386dd85e512c41f5a8d072bbea990b49 t/Image-weaken.t
 SHA1 acee2c0ddc3ea7e9a1533d31f21ecfc0a05b9774 t/Image-xpm.t
-SHA1 cadb6ccc3996acc6ba04f621bf01117d5f168fc5 t/Image.t
+SHA1 bc31d254556dc6579eab4abbd4dd90d7dac0c1a8 t/Image.t
 SHA1 016f6f5865d54130d50f400fb630091bd1a6c76f t/MyTestHelpers.pm
 SHA1 2844313f42e403c3f519e5a22c01cb3c92ca0454 t/MyTestImageBase.pm
 SHA1 0279c9310ec528d10a2a14e602bf98f1c776cce1 xt/0-META-read.t
@@ -57,7 +57,7 @@ SHA1 230df3a34109353a91d90d51372ce8d96ac974e7 xt/1-Test-Synopsis.t
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v1.4.11 (GNU/Linux)
 
-iD8DBQFOM2IfLFMCIV9q3ToRAs3YAJ921nzOdxNVgANgpGP6S8en1hSZ0QCdEGzo
-C7BUujNNtDbKwDW9ETNyPaQ=
-=jdud
+iD8DBQFOVuVxLFMCIV9q3ToRAmnBAJ9UbKprVsvGRkPw8+4TevSjIPczPgCgl9Qp
+FMNJeIxKoqrlnIhdJn3RhRc=
+=n+If
 -----END PGP SIGNATURE-----

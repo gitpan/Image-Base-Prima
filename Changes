@@ -17,9 +17,12 @@ You can get a copy of the GNU General Public License online at
 
 
 
+Version 7, August 2011
+    - Drawable fix diamond() coordinates
+
 Version 6, July 2011
     - new -quality_percent option for JPEG
-    - diamond() using polyline/fillpoly
+    - Drawable diamond() use polyline/fillpoly
 
 Version 5, May 2011
     - tests more of allow for no PNG codec

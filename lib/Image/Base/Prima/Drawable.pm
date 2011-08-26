@@ -30,10 +30,10 @@ use vars '$VERSION', '@ISA';
 use Image::Base;
 @ISA = ('Image::Base');
 
-$VERSION = 6;
+$VERSION = 7;
 
 # uncomment this to run the ### lines
-#use Smart::Comments '###';
+#use Devel::Comments '###';
 
 sub new {
   my $class = shift;
@@ -165,12 +165,15 @@ sub diamond {
   } else {
     _set_colour($self,$colour);
 
-    my $xh = ($x2 - $x1 + 1);
-    my $yh = ($y1 - $y2 + 1);
-    my $xeven = ! ($xh & 1);
-    my $yeven = ! ($yh & 1);
+    my $xh = ($x2 - $x1);
+    my $yh = ($y1 - $y2);   # y1 bigger
+    my $xeven = ($xh & 1);
+    my $yeven = ($yh & 1);
     $xh = int($xh / 2);
     $yh = int($yh / 2);
+    ### assert: $x1+$xh+$xeven == $x2-$xh
+    ### assert: $y2+$yh+$yeven == $y1-$yh
+
     my $poly = [$x1+$xh, $y1,  # top centre
 
                 # left
@@ -264,30 +267,41 @@ C<Image::Base::Prima::Drawable> is a subclass of C<Image::Base>,
 
 =head1 DESCRIPTION
 
-C<Image::Base::Prima::Drawable> extends C<Image::Base> to
-draw into a C<Prima::Drawable> drawable, meaning a widget window, off-screen
-image, printer, etc.
+C<Image::Base::Prima::Drawable> extends C<Image::Base> to draw into a
+C<Prima::Drawable> drawable, meaning a widget window, off-screen image,
+printer, postscript accumulator, etc.
 
 The native Prima drawing has many more features, but this module can point
 some C<Image::Base> style code at a Prima image etc.
 
-Colour names for drawing are "Blue" etc of the Prima colour constants like
-C<cl::Blue> (see L<Prima::Drawable/Color space>), plus 2-digit
-#RRGGBB or 4-digit #RRRRGGGGBBBB hex.  Internally Prima works in 8-bit RGB
-components so 4-digit values are reduced.  Drawables with less than 24-bits
-per pixel reduce further.
-
 X,Y coordinates are the usual C<Image::Base> style 0,0 at the top-left
 corner.  Prima works from 0,0 as the bottom-left but
-C<Image::Base::Prima::Drawable> converts.  There's no support for the Prima
-"translate" origin shift.
+C<Image::Base::Prima::Drawable> converts.  No attention is paid to the Prima
+C<translate()> origin change, which ends up meaning the top-left shifts up
+etc with the translate.  That seems reasonably logical, is it the best way
+though?
 
-None of the drawing functions here do a C<$drawable-E<gt>begin_paint>.
-That's left to the application, and of course happens automatically in an
-C<onPaint> handler call.  The symptom of forgetting is that lines,
-rectangles and ellipses don't draw anything.  In the current code C<xy>
-might come out because it uses C<$drawable-E<gt>pixel>, but don't rely on
-that.
+None of the drawing functions here do a C<$drawable-E<gt>begin_paint()> or a
+C<$drawable-E<gt>begin_doc()> (for C<Prima::PS::Drawable>).  That's left to
+the application.  A C<begin_paint()> of course happens automatically in an
+C<onPaint> handler call.  The symptom of forgetting a C<begin_paint()> is
+generally that lines, rectangles and ellipses don't draw anything, though
+C<xy()> might come out because it uses C<$drawable-E<gt>pixel> (but don't
+rely on that).  Forgetting a C<begin_doc()> for PS output may cause various
+warnings about C<undef>.
+
+=head2 Colours
+
+Colour names for drawing are
+
+    Blue             Prima colour constants cl::Blue etc
+    #RRGGBB          hex
+    #RRRRGGGGBBBB    hex
+
+Internally Prima works in 8-bit RGB components though drawables with with
+less than 24-bits per pixel then reduce further.  See
+L<Prima::Drawable/Color space> for details and the C<cl::> colour constant
+names.
 
 =head1 FUNCTIONS
 
