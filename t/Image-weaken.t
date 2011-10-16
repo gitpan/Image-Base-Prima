@@ -25,7 +25,7 @@ use lib 't';
 use MyTestHelpers;
 BEGIN { MyTestHelpers::nowarnings() }
 
-my $test_count = 1;
+my $test_count = (tests => 1)[1];
 plan tests => $test_count;
 
 # Test::Weaken 3 for "contents"

@@ -30,7 +30,7 @@ use vars '$VERSION', '@ISA';
 use Image::Base;
 @ISA = ('Image::Base');
 
-$VERSION = 7;
+$VERSION = 8;
 
 # uncomment this to run the ### lines
 #use Devel::Comments '###';
@@ -298,12 +298,14 @@ Colour names for drawing are
     #RRGGBB          hex
     #RRRRGGGGBBBB    hex
 
-Internally Prima works in 8-bit RGB components though drawables with with
-less than 24-bits per pixel then reduce further.  See
-L<Prima::Drawable/Color space> for details and the C<cl::> colour constant
-names.
+Internally Prima works in 8-bit RGB components though drawables with less
+than 24-bits per pixel then reduce further.  See L<Prima::Drawable/Color
+space> for details and the C<cl::> colour constant names.
 
 =head1 FUNCTIONS
+
+See L<Image::Base/FUNCTIONS> for the behaviour common to all Image-Base
+classes.
 
 =over 4
 

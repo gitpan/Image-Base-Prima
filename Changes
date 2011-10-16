@@ -17,8 +17,14 @@ You can get a copy of the GNU General Public License online at
 
 
 
+Version 9, October 2011
+    - tests fix Image-png.t not to depend on jpeg format available
+
+Version 8, September 2011
+    - in Image defer "use Prima" to a require when needed
+
 Version 7, August 2011
-    - Drawable fix diamond() coordinates
+    - fix Drawable diamond() coordinates
 
 Version 6, July 2011
     - new -quality_percent option for JPEG

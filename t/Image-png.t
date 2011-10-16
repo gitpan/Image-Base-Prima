@@ -32,7 +32,7 @@ use Prima::noX11; # without connecting to the server
 use Prima;
 MyTestHelpers::diag ("Prima version ",Prima->VERSION);
 
-my $test_count = 17;
+my $test_count = (tests => 17)[1];
 plan tests => $test_count;
 
 {
@@ -81,7 +81,7 @@ END {
     $image
   };
   my $err = $@;
-  MyTestHelpers::diag ("new() err is \"",$err,"\"");
+  MyTestHelpers::diag ("new() error [expected] is \"",$err,"\"");
   ok ($eval_ok, 0, 'new() error for no file - doesn\'t reach end');
   ok ($ret, undef, 'new() error for no file - return undef');
   ok (!! scalar($err =~ /^Cannot/), 1,
@@ -96,7 +96,7 @@ END {
     $image
   };
   my $err = $@;
-  MyTestHelpers::diag ("load() err is \"",$err,"\"");
+  MyTestHelpers::diag ("load() error [expected] is \"",$err,"\"");
   ok ($eval_ok, 0, 'load() error for no file - doesn\'t reach end');
   ok ($ret, undef, 'load() error for no file - return undef');
   ok (!! scalar($err =~ /^Cannot/), 1,
@@ -117,7 +117,7 @@ if (eval { Prima->VERSION(1.29); 1 }) {
     $image
   };
   my $err = $@;
-  MyTestHelpers::diag ("save() err is \"",$err,"\"");
+  MyTestHelpers::diag ("save() error [expected] is \"",$err,"\"");
   ok ($eval_ok, 0, 'save() error for no dir - doesn\'t reach end');
   ok ($ret, undef, 'save() error for no dir - return undef');
   ok (!! scalar($err =~ /^Cannot/), 1,
@@ -156,13 +156,13 @@ if (eval { Prima->VERSION(1.29); 1 }) {
 {
   my $prima_image = Prima::Image->new (width => 10, height => 10);
   my $image = Image::Base::Prima::Image->new (-drawable => $prima_image,
-                                              -file_format => 'jpeg');
+                                              -file_format => 'png');
   $image->save ($filename);
   ok (-e $filename, 1);
 }
 {
   my $image = Image::Base::Prima::Image->new (-file => $filename);
-  ok ($image->get('-file_format'), 'JPEG',
+  ok ($image->get('-file_format'), 'PNG',
       'written to explicit -file_format not per extension');
 }
 

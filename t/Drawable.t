@@ -25,7 +25,7 @@ use lib 't';
 use MyTestHelpers;
 BEGIN { MyTestHelpers::nowarnings() }
 
-my $test_count = 2470;
+my $test_count = (tests => 2470)[1];
 plan tests => $test_count;
 
 # Test::Weaken 3 for "contents"
@@ -43,7 +43,7 @@ require Image::Base::Prima::Drawable;
 #------------------------------------------------------------------------------
 # VERSION
 
-my $want_version = 7;
+my $want_version = 8;
 ok ($Image::Base::Prima::Drawable::VERSION,
     $want_version, 'VERSION variable');
 ok (Image::Base::Prima::Drawable->VERSION,

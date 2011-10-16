@@ -31,7 +31,7 @@ BEGIN { MyTestHelpers::nowarnings() }
 use Prima::noX11; # without connecting to the server
 use Prima;
 
-my $test_count = 12;
+my $test_count = (tests => 12)[1];
 plan tests => $test_count;
 
 {

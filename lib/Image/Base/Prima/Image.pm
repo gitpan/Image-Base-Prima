@@ -20,13 +20,12 @@ package Image::Base::Prima::Image;
 use 5.005;
 use strict;
 use Carp;
-use Prima;
 use vars '$VERSION', '@ISA';
 
 use Image::Base::Prima::Drawable;
 @ISA = ('Image::Base::Prima::Drawable');
 
-$VERSION = 7;
+$VERSION = 8;
 
 # uncomment this to run the ### lines
 #use Smart::Comments '###';
@@ -49,6 +48,7 @@ sub new {
   my $filename = delete $params{'-file'};
   if (! exists $params{'-drawable'}) {
     ### create new Prima-Image
+    require Prima;
     $params{'-drawable'} = Prima::Image->new
       ((defined $params{'-width'}  ? (width =>delete $params{'-width'})  : ()),
        (defined $params{'-height'} ? (height=>delete $params{'-height'}) : ()),
@@ -222,6 +222,9 @@ server, so an X connection is necessary.  Don't use C<Prima::noX11> or
 drawing operations will quietly do nothing.
 
 =head1 FUNCTIONS
+
+See L<Image::Base::Prima::Drawable/FUNCTIONS> and L<Image::Base/FUNCTIONS>
+for behaviour inherited from the superclasses.
 
 =over 4
 
